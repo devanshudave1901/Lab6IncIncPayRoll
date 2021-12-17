@@ -1,0 +1,66 @@
+﻿@*
+    Name : Devanshu Dave
+    Student ID: 100785733
+    Date: 13/12/2021
+    Description: This is the summary.cs page which displayes
+                 the summary of the all the workers with average pay, total pay, total workers registered and total messages.
+*@
+
+@model IEnumerable<Lab6IncIncPayRoll.Models.PieceworkWorkerModel>
+
+@{
+    // Declarations
+    ViewData["Title"] = "Worker List";
+    // Declared totalWorkers with int data type and initialized with 0
+    int totalWorkers = 0;
+    // Declared totalMessages with decimal data type and initialized with 0
+    decimal totalMessages = 0;
+    // Declared totalPay with decimal data type and initialized with 0
+    decimal totalPay = 0M;
+    // Declared averagePay variable with decimal data type
+    decimal averagePay;
+
+    @foreach (var item in Model)
+    {
+        @* incrementing the total worker evertime it loops *@
+        totalWorkers++;
+        @* Also adding Total Messages everytime it loops *@
+        totalMessages += @item.Messages;
+        //also incrementing adding the pay to get total pay every time it loops
+        totalPay += item.GetPay();
+
+        
+    }
+}
+
+<h1>Summary</h1>
+
+<hr />
+@* To only shop if there are any stored workers *@
+@* if totalworkers more than 0 then show the summary *@
+@if (totalWorkers > 0)
+{
+    // calculating averagePay
+    averagePay = totalPay / totalWorkers;
+
+    <hr />
+    @* Displaying all calculated data with thier appropriate title *@
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <p>
+                @*Displays Total Workers*@
+                Total Workers Registered: @totalWorkers
+            </p>
+            <p>
+                Total Messages: @totalMessages
+            </p>
+            <p>
+                Total Pay: @totalPay.ToString("c")
+            </p>
+            <p>
+                Average Pay: @averagePay.ToString("c")
+
+            </p>
+        </div>
+    </div>
+}

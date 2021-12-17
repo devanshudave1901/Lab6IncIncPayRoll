@@ -1,0 +1,106 @@
+﻿@*
+    Name : Devanshu Dave
+    Student ID: 100785733
+    Date: 04-12-2021
+    Description: This is the index.cs page which displayes
+                 the table with the data of the workers.
+*@
+
+@model IEnumerable<Lab6IncIncPayRoll.Models.PieceworkWorkerModel>
+
+@{
+    // Declarations
+    ViewData["Title"] = "Worker List";
+    // Declared totalWorkers with int data type and initialized with 0
+    int totalWorkers = 0;
+    // Declared totalMessages with decimal data type and initialized with 0
+    decimal totalMessages = 0;
+    // Declared totalPay with decimal data type and initialized with 0
+    decimal totalPay = 0M;
+    // Declared averagePay variable with decimal data type
+    decimal averagePay;
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Messages)
+            </th>
+            <th>
+                @* Worker Type Heading *@
+                Worker Type
+            </th>
+            <th>
+                @* Pay heading *@
+                Pay
+            </th>
+            <th>
+                @* Date Created Heading *@
+                Date Created
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @* For each loop for data of all the workers registered *@
+        @foreach (var item in Model)
+        {
+            @* incrementing the total worker evertime it loops *@
+            totalWorkers++;
+            @* Also adding Total Messages everytime it loops *@
+            totalMessages += @item.Messages;
+            //also incrementing adding the pay to get total pay every time it loops
+            totalPay += item.GetPay();
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Messages)
+                </td>
+                <td>
+                    @*If the worker is senior then label it as senior worker  *@
+                    @if (item.IsSenior == true)
+                    {
+                        @Html.Label("Senior Worker")
+                    }
+                    @*else label it as PieceworkWorker  *@
+                    else
+                    {
+                        @Html.Label("Piecework Worker")
+                    }
+                </td>
+                <td>
+                    @* Display the calculated pay of that worker *@
+                    @item.GetPay().ToString("c")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
